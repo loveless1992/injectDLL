@@ -1,8 +1,9 @@
 ﻿  pch.cpp
   dllmain.cpp
   WritAndRead.cpp
-C:\Users\Ninga\Desktop\CODE\WritAndRead\WritAndRead\WritAndRead.cpp(25,18): warning C4477: “sprintf_s”: 格式字符串“%s”需要类型“char *”的参数，但可变参数 1 拥有了类型“DWORD”
-C:\Users\Ninga\Desktop\CODE\WritAndRead\WritAndRead\WritAndRead.cpp(30,20): warning C4477: “sprintf_s”: 格式字符串“%s”需要类型“char *”的参数，但可变参数 1 拥有了类型“DWORD”
-C:\Users\Ninga\Desktop\CODE\WritAndRead\WritAndRead\WritAndRead.cpp(39,19): warning C4477: “sprintf_s”: 格式字符串“%s”需要类型“char *”的参数，但可变参数 1 拥有了类型“DWORD”
+C:\Users\Ninga\Desktop\DLL\WritAndRead\WritAndRead\WritAndRead.cpp(25,18): warning C4477: “sprintf_s”: 格式字符串“%s”需要类型“char *”的参数，但可变参数 1 拥有了类型“DWORD”
+C:\Users\Ninga\Desktop\DLL\WritAndRead\WritAndRead\WritAndRead.cpp(30,20): warning C4477: “sprintf_s”: 格式字符串“%s”需要类型“char *”的参数，但可变参数 1 拥有了类型“DWORD”
+C:\Users\Ninga\Desktop\DLL\WritAndRead\WritAndRead\WritAndRead.cpp(35,19): warning C4477: “sprintf_s”: 格式字符串“%s”需要类型“char *”的参数，但可变参数 1 拥有了类型“DWORD”
+C:\Users\Ninga\Desktop\DLL\WritAndRead\WritAndRead\WritAndRead.cpp(41,19): warning C4477: “sprintf_s”: 格式字符串“%s”需要类型“char *”的参数，但可变参数 1 拥有了类型“DWORD”
   正在生成代码...
-  WritAndRead.vcxproj -> C:\Users\Ninga\Desktop\CODE\WritAndRead\Debug\WritAndRead.dll
+  WritAndRead.vcxproj -> C:\Users\Ninga\Desktop\DLL\WritAndRead\Debug\WritAndRead.dll

@@ -12,6 +12,9 @@
 #define WXName                          1006
 #define WXID                            1007
 #define PICURL                          1008
+#define PICURL2                         1009
+#define TEXT_PIC2                       1010
+#define TEXT_PHONE                      1011
 
 // Next default values for new objects
 // 

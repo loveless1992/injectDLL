@@ -28,10 +28,12 @@ void readWeChatData(HWND hwndDlg)
 	//微信名
 	char wxName[0x100] = { 0 };
 	sprintf_s(wxName, "%s", winApp + 0x1AD1BAC);
-
-	wxName[strlen(wxName)] = '\0';
 	SetDlgItemText(hwndDlg, TEXT_NAME, wxName);
-	MessageBox(NULL, wxName, "输出", 0);
+
+	//手机号
+	char phone[0x100] = { 0 };
+	sprintf_s(phone, "%s", winApp + 0x1AD1BE0);
+	SetDlgItemText(hwndDlg, TEXT_PHONE, phone);
 
 	//微信头像
 	char wxPic[0x100] = { 0 };
@@ -39,5 +41,6 @@ void readWeChatData(HWND hwndDlg)
 	sprintf_s(wxPic, "%s", *((DWORD *)pPic));
 	SetDlgItemText(hwndDlg, TEXT_PIC, wxPic);
 
+	
 
 }
