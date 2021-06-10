@@ -44,3 +44,9 @@ void readWeChatData(HWND hwndDlg)
 	
 
 }
+
+//Ð´ÄÚ´æ
+void writeWeChatData(HWND hwndDlg)
+{
+	
+}
