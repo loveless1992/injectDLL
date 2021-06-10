@@ -1,0 +1,7 @@
+微信3.2.x
+  进程：weChat.exe
+  偏移：
+    //微信名：05BC1BAC = WeChatWin.dll + 1AD 1BAC
+    //微信账号：05BC1D10 = WeChatWin.dll + 1AD 1D10
+    //头像：05BC1E74 = = WeChatWin.dll + 1AD 1E74
+    //手机号：05BC1BE0 = WeChatWin.dll + 1AD 1BE0	
