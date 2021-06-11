@@ -36,7 +36,7 @@ void readWeChatData(HWND hwndDlg)
 	SetDlgItemText(hwndDlg, TEXT_PHONE, phone);
 
 	//Î¢ÐÅÍ·Ïñ
-	char wxPic[0x100] = { 0 };
+	char wxPic[0x200] = { 0 };
 	DWORD pPic = winApp + 0x1AD1E74;
 	sprintf_s(wxPic, "%s", *((DWORD *)pPic));
 	SetDlgItemText(hwndDlg, TEXT_PIC, wxPic);

@@ -9,6 +9,7 @@
 #include <stdio.h>
 #include <string.h>
 
+char* processName = (char*)"WeChat.exe";
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPWSTR lpCmdLine, _In_ int nCmdShow)
 {
@@ -18,10 +19,12 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 INT_PTR CALLBACK Dlgproc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-	
 	switch (uMsg)
 	{
 	case WM_INITDIALOG://首次加载
+		//首次加载时需要给选框赋予默认值
+		SetDlgItemText(hwndDlg, ID_DLL_PATH, (char*)"E:\\WritAndRead.dll");
+		SetDlgItemText(hwndDlg, ID_PROCESS_NAME, (char*)"WeChat.exe");
 		break;
 	case WM_CLOSE://关闭事件
 		EndDialog(hwndDlg, NULL);
@@ -29,8 +32,13 @@ INT_PTR CALLBACK Dlgproc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	case WM_COMMAND://所有按钮的点击事件
 		if (wParam == IN_DLL)
 		{
-			CHAR pathStr[0x100] = { "E:\\WritAndRead.dll" };
-			DWORD dwPID = ProcessNameToFindPID((LPSTR)"WeChat.exe");
+			CHAR pathStr[0x100] = { 0 };
+			GetDlgItemText(hwndDlg, ID_DLL_PATH, pathStr,sizeof(pathStr));
+
+			CHAR processNameStr[0x100] = { 0 };
+			GetDlgItemText(hwndDlg, ID_PROCESS_NAME, processNameStr, sizeof(processNameStr));
+			//CHAR pathStr[0x100] = { "E:\\WritAndRead.dll" };
+			DWORD dwPID = ProcessNameToFindPID((LPSTR)processNameStr);
 			InjectDll(dwPID, pathStr);
 		}
 		else if (wParam == UN_DLL)
