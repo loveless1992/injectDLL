@@ -29,7 +29,6 @@ INT_PTR CALLBACK Dlgproc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	switch (uMsg)
 	{
 	case WM_INITDIALOG://首次加载
-		readWeChatData(hwndDlg);
 		break;
 	case WM_CLOSE://关闭事件
 		EndDialog(hwndDlg, NULL);
@@ -37,11 +36,11 @@ INT_PTR CALLBACK Dlgproc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	case WM_COMMAND://所有按钮的点击事件
 		if (wParam == READ_DATA)
 		{
-			
+			readWeChatData(hwndDlg);
 		}
 		else if (wParam == WRITE_DATA)
 		{
-			
+			writeWeChatData(hwndDlg);
 		}
 		break;
 	default:

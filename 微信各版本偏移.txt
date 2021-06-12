@@ -4,4 +4,12 @@
     //微信名：05BC1BAC = WeChatWin.dll + 1AD 1BAC
     //微信账号：05BC1D10 = WeChatWin.dll + 1AD 1D10
     //头像：05BC1E74 = = WeChatWin.dll + 1AD 1E74
-    //手机号：05BC1BE0 = WeChatWin.dll + 1AD 1BE0	
+    //手机号：05BC1BE0 = WeChatWin.dll + 1AD 1BE0
+
+微信2.x版本
+  进程：weChatStore.exe
+  偏移：
+    //微信名：05BC1BAC = WeChatWin.dll + 104F52C
+    //微信账号：05BC1D10 = WeChatWin.dll+104F690
+    //头像：05BC1E74 = = WeChatWin.dll + 104 F7F4
+    //手机号：05BC1BE0 = WeChatWin.dll + 104 F560

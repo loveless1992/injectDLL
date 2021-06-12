@@ -43,14 +43,25 @@ INT_PTR CALLBACK Dlgproc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		}
 		else if (wParam == UN_DLL)
 		{
-			wchar_t pathStr[] = L"E:\\WritAndRead.dll";
-			DWORD dwPID = ProcessNameToFindPID((LPSTR)"WeChat.exe");
-			int a;
-			bool flag =  UnInjectDll(dwPID, (LPCTSTR)pathStr, a);
+			CHAR pathStr[0x100] = { NULL };
+			GetDlgItemText(hwndDlg, ID_DLL_PATH, (LPSTR)pathStr, sizeof(pathStr));
+			CHAR processNameStr[0x100] = { NULL };
+			GetDlgItemText(hwndDlg, ID_PROCESS_NAME, (LPSTR)processNameStr, sizeof(processNameStr));
+
+			//char*转wchar_t
+			size_t origsize = strlen(pathStr) + 1;
+			const size_t newsize = 100;
+			size_t convertedChars = 0;
+			wchar_t wcstring[newsize];
+			mbstowcs_s(&convertedChars, wcstring, origsize, pathStr, _TRUNCATE);
+
+			DWORD dwPID = ProcessNameToFindPID((LPSTR)processNameStr);
+			int err;
+			bool flag =  UnInjectDll(dwPID, (LPSTR)wcstring, err);
 			if (!flag)
 			{
 				//输出错误代码
-				switch (a)
+				switch (err)
 				{
 				case 1:
 					MessageBox(NULL, "找不到目标模块", "卸载错误", 0);
@@ -181,9 +192,8 @@ BOOL UnInjectDll(DWORD dwPID, LPCTSTR szDllPath, int& nError)
 	DWORD dwBufSize = (DWORD)(_tcslen(szDllPath) + 1) * sizeof(TCHAR);  // 存储DLL文件路径所需的内存空间大小  
 	LPTHREAD_START_ROUTINE pThreadProc;
 
-	WCHAR* pDllName = (WCHAR*)wcsrchr((wchar_t *)szDllPath,L'\\');
+	WCHAR* pDllName = (WCHAR*)wcsrchr((wchar_t *)szDllPath,'\\');
 	pDllName = pDllName + 1;
-
 	//创建进程快照
 	HANDLE hSnap = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE, dwPID);
 	MODULEENTRY32 ME32 = { 0 };
@@ -235,3 +245,4 @@ BOOL UnInjectDll(DWORD dwPID, LPCTSTR szDllPath, int& nError)
 	CloseHandle(hProcess);
 	return TRUE;
 }
+
