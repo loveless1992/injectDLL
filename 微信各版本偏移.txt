@@ -1,15 +1,19 @@
 微信3.2.x
   进程：weChat.exe
   偏移：
-    //微信名：05BC1BAC = WeChatWin.dll + 1AD 1BAC
-    //微信账号：05BC1D10 = WeChatWin.dll + 1AD 1D10
-    //头像：05BC1E74 = = WeChatWin.dll + 1AD 1E74
-    //手机号：05BC1BE0 = WeChatWin.dll + 1AD 1BE0
+    //微信名：WeChatWin.dll + 1AD1BAC
+    //微信账号：WeChatWin.dll + 1AD1D10
+    //头像：WeChatWin.dll + 1AD1E74
+    //手机号：WeChatWin.dll + 1AD1BE0
+    //登陆时二维码指针位置：WeChatWin.dll + 1AD4568
+
+
+    //微信登陆二维码偏移 : WeChatWin.dll + 266AAC
 
 微信2.x版本
   进程：weChatStore.exe
   偏移：
-    //微信名：05BC1BAC = WeChatWin.dll + 104F52C
-    //微信账号：05BC1D10 = WeChatWin.dll+104F690
-    //头像：05BC1E74 = = WeChatWin.dll + 104 F7F4
-    //手机号：05BC1BE0 = WeChatWin.dll + 104 F560
+    //微信名：WeChatWin.dll + 104F52C
+    //微信账号：WeChatWin.dll+104F690
+    //头像：WeChatWin.dll + 104 F7F4
+    //手机号：WeChatWin.dll + 104 F560
