@@ -6,9 +6,13 @@
     //头像：WeChatWin.dll + 1AD1E74
     //手机号：WeChatWin.dll + 1AD1BE0
     //登陆时二维码指针位置：WeChatWin.dll + 1AD4568
-
-
     //微信登陆二维码偏移 : WeChatWin.dll + 266AAC
+//微信3.2.x版本call
+微信消息发送CALL偏移为：1218BA，基址为WeChatWin.dll
+寄存器中两个变量 ecx和eax
+ecx:地址，ecx+0x24所存放的数据为需要发送的微信ID的指针，UNICODE类型，修改此指针指向的内容，可以修改发送的对象
+eax：发送的数据  [eax]为一个结构体，第一位标识数据类型，第二位标识指向数据的指针，第三位标识数据长度
+
 
 微信2.x版本
   进程：weChatStore.exe
