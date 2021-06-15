@@ -1,3 +1,13 @@
+Î¢ÐÅ2.x°æ±¾
+  ½ø³Ì£ºweChatStore.exe
+  Æ«ÒÆ£º
+    //Î¢ÐÅÃû£ºWeChatWin.dll + 104F52C
+    //Î¢ÐÅÕËºÅ£ºWeChatWin.dll+104F690
+    //Í·Ïñ£ºWeChatWin.dll + 104 F7F4
+    //ÊÖ»úºÅ£ºWeChatWin.dll + 104 F560
+
+
+
 Î¢ÐÅ3.2.x
   ½ø³Ì£ºweChat.exe
   Æ«ÒÆ£º
@@ -14,10 +24,9 @@ ecx:µØÖ·£¬ecx+0x24Ëù´æ·ÅµÄÊý¾ÝÎªÐèÒª·¢ËÍµÄÎ¢ÐÅIDµÄÖ¸Õë£¬UNICODEÀàÐÍ£¬ÐÞ¸Ä´ËÖ¸ÕëÖ
 eax£º·¢ËÍµÄÊý¾Ý  [eax]ÎªÒ»¸ö½á¹¹Ìå£¬µÚÒ»Î»±êÊ¶Êý¾ÝÀàÐÍ£¬µÚ¶þÎ»±êÊ¶Ö¸ÏòÊý¾ÝµÄÖ¸Õë£¬µÚÈýÎ»±êÊ¶Êý¾Ý³¤¶È
 
 
-Î¢ÐÅ2.x°æ±¾
-  ½ø³Ì£ºweChatStore.exe
-  Æ«ÒÆ£º
-    //Î¢ÐÅÃû£ºWeChatWin.dll + 104F52C
-    //Î¢ÐÅÕËºÅ£ºWeChatWin.dll+104F690
-    //Í·Ïñ£ºWeChatWin.dll + 104 F7F4
-    //ÊÖ»úºÅ£ºWeChatWin.dll + 104 F560
+Î¢ÐÅ3.3
+//Î¢ÐÅ3.3.x°æ±¾call
+Î¢ÐÅÏûÏ¢·¢ËÍCALLÆ«ÒÆÎª£º1343BA£¬»ùÖ·ÎªWeChatWin.dll
+¼Ä´æÆ÷ÖÐÁ½¸ö±äÁ¿ ecxºÍeax
+ecx:µØÖ·£¬ecx+0x24Ëù´æ·ÅµÄÊý¾ÝÎªÐèÒª·¢ËÍµÄÎ¢ÐÅIDµÄÖ¸Õë£¬UNICODEÀàÐÍ£¬ÐÞ¸Ä´ËÖ¸ÕëÖ¸ÏòµÄÄÚÈÝ£¬¿ÉÒÔÐÞ¸Ä·¢ËÍµÄ¶ÔÏó
+eax£º·¢ËÍµÄÊý¾Ý  [eax]ÎªÒ»¸ö½á¹¹Ìå£¬µÚÒ»Î»±êÊ¶Êý¾ÝÀàÐÍ£¬µÚ¶þÎ»±êÊ¶Ö¸ÏòÊý¾ÝµÄÖ¸Õë£¬µÚÈýÎ»±êÊ¶Êý¾Ý³¤¶È
