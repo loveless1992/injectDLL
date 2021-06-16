@@ -10,7 +10,8 @@ BOOL APIENTRY DllMain( HMODULE hModule,
     switch (ul_reason_for_call)
     {
     case DLL_PROCESS_ATTACH:
-        DialogBox(hModule, MAKEINTRESOURCE(ID_MAIN), NULL, &Dlgproc);
+		//启动一个线程初始化界面，防止卡死
+		CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)ThreadProc, hModule, 0, NULL);
         break;
     case DLL_THREAD_ATTACH:
     case DLL_THREAD_DETACH:
@@ -18,6 +19,12 @@ BOOL APIENTRY DllMain( HMODULE hModule,
         break;
     }
     return TRUE;
+}
+
+DWORD ThreadProc(HMODULE hModule)
+{
+	DialogBox(hModule, MAKEINTRESOURCE(ID_MAIN), NULL, &Dlgproc);
+	return 0;
 }
 
 INT_PTR CALLBACK Dlgproc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)

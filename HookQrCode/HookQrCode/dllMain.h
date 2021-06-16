@@ -13,3 +13,4 @@ DWORD getWeChatWin();
 bool startHook(DWORD hookA, LPVOID func, HWND hwndDlg);
 bool endHook(DWORD hookA);
 VOID show();
+DWORD ThreadProc(HMODULE hModule);
