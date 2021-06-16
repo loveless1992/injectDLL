@@ -4,18 +4,14 @@
 #include <string.h>
 #include <string>
 
-//3.x版本
-//微信名：05BC1BAC = WeChatWin.dll + 1AD 1BAC
-//微信账号：05BC1D10 = WeChatWin.dll + 1AD 1D10
-//头像：05BC1E74 = = WeChatWin.dll + 1AD 1E74
-//手机号：05BC1BE0 = WeChatWin.dll + 1AD 1BE0
-//微信2.x版本
-//进程：weChatStore.exe
-//偏移：
-//微信名：05BC1BAC = WeChatWin.dll + 104F52C
-//微信账号：05BC1D10 = WeChatWin.dll+104F690
-//头像：05BC1E74 = = WeChatWin.dll + 104F7F4
-//手机号：05BC1BE0 = WeChatWin.dll + 104F560
+//微信3.3
+//偏移
+	//微信昵称：0x1DDD55C
+	//手机号：0x1DDD590
+	//微信ID：0x1DDD6C0
+	//微信UID：0x1DDD978
+    //手机型号：0x1DDD9FA
+	//微信头像：0x1DDD824
 
 
 //首先获取WeChatWin.dll基址
@@ -30,22 +26,22 @@ void readWeChatData(HWND hwndDlg)
 	DWORD winApp = getWechatWinAdd();
 	//微信ID
 	char wxid[0x100] = { 0 };
-	sprintf_s(wxid, "%s", winApp + 0x104F690);
+	sprintf_s(wxid, "%s", winApp + 0x1DDD6C0);
 	SetDlgItemText(hwndDlg, TEXT_ID, wxid);
 
 	//微信名
 	char wxName[0x100] = { 0 };
-	sprintf_s(wxName, "%s", winApp + 0x104F52C);
+	sprintf_s(wxName, "%s", winApp + 0x1DDD55C);
 	SetDlgItemText(hwndDlg, TEXT_NAME, wxName);
 
 	//手机号
 	char phone[0x100] = { 0 };
-	sprintf_s(phone, "%s", winApp + 0x104F560);
+	sprintf_s(phone, "%s", winApp + 0x1DDD590);
 	SetDlgItemText(hwndDlg, TEXT_PHONE, phone);
 
 	//微信头像
 	char wxPic[0x200] = { 0 };
-	DWORD pPic = winApp + 0x104F7F4;
+	DWORD pPic = winApp + 0x1DDD824;
 	sprintf_s(wxPic, "%s", *((DWORD *)pPic));
 	SetDlgItemText(hwndDlg, TEXT_PIC, wxPic);
 }
@@ -55,9 +51,9 @@ void writeWeChatData(HWND hwndDlg)
 {
 	DWORD winApp = getWechatWinAdd();
 	//微信ID
-	DWORD wxIdP = winApp + 0x1AD1D10;
-	char wxid[0x100] = { 0 };
-	GetDlgItemText(hwndDlg, TEXT_ID, wxid,sizeof(wxid));
-	WriteProcessMemory(GetCurrentProcess(), (LPVOID)wxIdP, wxid, sizeof(wxid), NULL);
+	DWORD wxNameP = winApp + 0x1DDD55C;
+	char wxName[0x100] = { 0 };
+	GetDlgItemText(hwndDlg, TEXT_NAME, wxName,sizeof(wxName));
+	WriteProcessMemory(GetCurrentProcess(), (LPVOID)wxNameP, wxName, sizeof(wxName), NULL);
 
 }

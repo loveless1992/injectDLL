@@ -33,25 +33,25 @@ INT_PTR CALLBACK Dlgproc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		if (wParam == HOOK_START)
 		{
 			//开始HOOK
-			if (startHook((DWORD)0x266AAC, show, hwndDlg) == true)
+			if (startHook((DWORD)0x5CABEA, show, hwndDlg) == true)
 			{
-				SetDlgItemText(hwndDlg, HOOK_STATE, "已加载HOOK");
+				SetDlgItemText(hwndDlg, ID_STATE, "已加载HOOK");
 			}
 			else
 			{
-				SetDlgItemText(hwndDlg, HOOK_STATE, "加载HOOK失败");
+				SetDlgItemText(hwndDlg, ID_STATE, "加载HOOK失败");
 			}
 		}
 		else if (wParam == HOO_END)
 		{
 			//卸载HOOK
-			if (endHook((DWORD)0x266AAC))
+			if (endHook((DWORD)0x5CABEA))
 			{
-				SetDlgItemText(hwndDlg, HOOK_STATE, "已卸载HOOK");
+				SetDlgItemText(hwndDlg, ID_STATE, "已卸载HOOK");
 			}
 			else
 			{
-				SetDlgItemText(hwndDlg, HOOK_STATE, "卸载HOOK失败");
+				SetDlgItemText(hwndDlg, ID_STATE, "卸载HOOK失败");
 			}
 			
 		}

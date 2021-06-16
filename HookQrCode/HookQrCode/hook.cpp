@@ -63,7 +63,7 @@ VOID __declspec(naked) show()
 	}
 	//将ecx中的二维码数据储存
 	saveImg(pEcx);
-	retAdd = getWeChatWin()+ 0x266AB1;
+	retAdd = getWeChatWin()+ 0x5CABEF;
 	//恢复寄存器
 	__asm{
 		mov eax,pEax
@@ -80,8 +80,8 @@ VOID __declspec(naked) show()
 
 
 
-//微信登陆二维码偏移 : WeChatWin.dll + 0x266AAC
-// hook返回的地址是: WeChatWin.dll + 0x266AB1，上面的地址+4
+//微信登陆二维码偏移 : WeChatWin.dll + 0x5CABEA
+// hook返回的地址是: WeChatWin.dll + 0x5CABEF
 //开始HOOK pram：所需要hook的函数的偏移   跳转的函数
 bool startHook(DWORD hookA,LPVOID func, HWND hwndDlg)
 {
