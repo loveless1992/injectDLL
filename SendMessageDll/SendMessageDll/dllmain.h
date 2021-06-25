@@ -9,4 +9,5 @@
 INT_PTR CALLBACK Dlgproc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam);
 VOID sendTextMessage(wchar_t* wxid, wchar_t* msg);
 DWORD ThreadProc(HMODULE hModule);
+VOID SendTextMessage(wchar_t* wxid, wchar_t* message);
 
