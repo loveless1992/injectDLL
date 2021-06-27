@@ -10,36 +10,97 @@ DWORD retCallAdd = 0;//这个是在hook那行所需要call的函数
 DWORD retAdd = 0;//返回的地址
 HWND gHwndList = 0;
 
-wchar_t wxid[0x100] = { 0 };
+char* list[10000];//存微信账号
+char* nameList[10000];//存微信名
+int listLen = 0;
+
 //获取模块基址
 DWORD getWechatWin()
 {
-	return (DWORD)LoadLibrary(L"WeChatWin.dll");
+	return (DWORD)LoadLibrary("WeChatWin.dll");
+}
+
+
+
+CHAR* UnicodeToUTF8(const WCHAR* wideStr)
+{
+	char* utf8Str = NULL;
+	int charLen = -1;
+	charLen = WideCharToMultiByte(CP_UTF8, 0, wideStr, -1, NULL, 0, NULL, NULL);
+	utf8Str = (char*)malloc(charLen);
+	WideCharToMultiByte(CP_UTF8, 0, wideStr, -1, utf8Str, charLen, NULL, NULL);
+	return utf8Str;
+}
+
+char* UnicodeToANSI(const wchar_t* str)
+{
+	char* result;
+	int textlen = 0;
+	textlen = WideCharToMultiByte(CP_ACP, 0, str, -1, NULL, 0, NULL, NULL);
+	result = (char*)malloc((textlen + 1) * sizeof(char));
+	memset(result, 0, sizeof(char) * (textlen + 1));
+	WideCharToMultiByte(CP_ACP, 0, str, -1, result, textlen, NULL, NULL);
+	return result;
 }
 //显示好友列表
 VOID insertUserLists(DWORD userData)
 {
-	/*
-	eax + 0x10 wxid 群
-	eax + 0x30 wxid 群
-	eax + 0x44 微信号
-	eax + 0x58 V1数据
-	eax + 0x8C 昵称
-	eax + 0x11C 小头像
-	eax + 0x130 大头像
-	eax + 0x144 未知md5数据
-	eax + 0x1C8 国籍
-	eax + 0x1DC 省份
-	eax + 0x1F0 城市
-	eax + 0x204 添加来源
-	eax + 0x294 朋友圈壁纸
-	*/
+	//微信ID
+	wchar_t wxid[0x100] = { 0 };
+	DWORD wxidAdd = userData + 0x38;
+	if (swprintf_s(wxid, L"%s", *((LPVOID*)wxidAdd)) == -1)
+	{
+		return;
+	}
 
-	DWORD wxidAdd = userData + 0xc;
-	swprintf_s(wxid, L"%s", *((LPVOID*)wxidAdd));
+	//微信号
+	wchar_t wxName[0x100] = { 0 };
+	DWORD wxNameAdd = userData + 0x4C;
+	if (swprintf_s(wxName, L"%s", *((LPVOID*)wxNameAdd)) == -1)
+	{
+		return;
+	}
 
-	/*MessageBox(NULL, wxid, L"wxid", NULL);
-	MessageBox(NULL, wxid, L"出现了！！！！", NULL);*/
+	//用户昵称
+	wchar_t userName[0x100] = { 0 };
+	DWORD userNameAdd = userData + 0x94;
+	if (swprintf_s(userName, L"%s", *((LPVOID*)userNameAdd)) == -1)
+	{
+		return;
+	}
+
+	//去重
+	bool flag = false;
+	for (int i = 0; i < listLen; i++)
+	{
+		if (strcmp(UnicodeToANSI(wxid), list[i]) == 0)
+		{
+			flag = true;
+			break;
+		}
+	}
+	if (!flag)
+	{
+		list[listLen] = UnicodeToANSI(wxid);
+		nameList[listLen] = UnicodeToANSI(userName);
+		listLen++;
+
+
+		LVITEM item = { 0 };
+		item.mask = LVIF_TEXT;
+
+		item.iSubItem = 0;
+		item.pszText = (LPSTR)UnicodeToANSI(wxid);
+		ListView_InsertItem(gHwndList, &item);
+
+		item.iSubItem = 1;
+		item.pszText = UnicodeToANSI(wxName);
+		ListView_SetItem(gHwndList, &item);
+
+		item.iSubItem = 2;
+		item.pszText = UnicodeToANSI(userName);
+		ListView_SetItem(gHwndList, &item);
+	}
 }
 
 
@@ -66,13 +127,13 @@ VOID StartHook(DWORD hookAdd, LPVOID jmpAdd)
 
 	//备份数据
 	if (ReadProcessMemory(hWHND, (LPVOID)hookAdd, backCode, HOOK_LEN, NULL) == 0) {
-		MessageBox(NULL, L"hook地址的数据读取失败", L"读取失败", MB_OK);
+		MessageBox(NULL, "hook地址的数据读取失败", "读取失败", MB_OK);
 		return;
 	}
 
 	//真正的hook开始了 把我们要替换的函数地址写进去 让他直接跳到我们函数里面去然后我们处理完毕后再放行吧！
 	if (WriteProcessMemory(hWHND, (LPVOID)hookAdd, JmpCode, HOOK_LEN, NULL) == 0) {
-		MessageBox(NULL, L"hook写入失败，函数替换失败", L"错误", MB_OK);
+		MessageBox(NULL, "hook写入失败，函数替换失败", "错误", MB_OK);
 		return;
 	}
 
@@ -117,11 +178,27 @@ VOID __declspec(naked) HookF()
 	}
 }
 
-VOID HookWechatQrcode(HWND hwndDlg, DWORD HookAdd)
+VOID HookWechatQrcode(HWND hwndDlg, HWND hwndList, DWORD HookAdd)
 {
+	gHwndList = hwndList;
 	WinAdd = getWechatWin();
 	hDlg = hwndDlg;
 	retCallAdd = WinAdd + 0x10D000;
 	retAdd = WinAdd + 0x55DEA2;
+	MessageBox(NULL, "HOOK开始", "提示", MB_OK);
 	StartHook(WinAdd + HookAdd, &HookF);
+}
+
+//卸载HOOK
+bool endHook(DWORD hookA)
+{
+	DWORD winAdd = getWechatWin();
+	DWORD hookAdd = winAdd + hookA;//hook的地址+偏移
+	HANDLE hProcess = OpenProcess(PROCESS_ALL_ACCESS, NULL, GetCurrentProcessId());
+	if (WriteProcessMemory(hProcess, (LPVOID)hookAdd, backCode, HOOK_LEN, NULL) == 0)
+	{
+		MessageBox(NULL, "HOOK卸载成功", "提示", NULL);
+		return false;
+	}
+	return true;
 }

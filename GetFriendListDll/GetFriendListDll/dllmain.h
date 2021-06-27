@@ -12,5 +12,7 @@
 #include <iostream>
 
 DWORD ThreadProc(HMODULE hModule);
-VOID HookWechatQrcode(HWND hwndDlg, DWORD HookAdd);
 INT_PTR CALLBACK Dlgproc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam);
+VOID HookWechatQrcode(HWND hwndDlg, HWND hwndList, DWORD HookAdd);
+void InitListContrl(HWND List);
+bool endHook(DWORD hookA);

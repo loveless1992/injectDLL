@@ -2,6 +2,8 @@
 #include "pch.h"
 #include"dllmain.h"
 
+HWND gUserListView = NULL;
+
 BOOL APIENTRY DllMain( HMODULE hModule,
                        DWORD  ul_reason_for_call,
                        LPVOID lpReserved
@@ -31,9 +33,15 @@ DWORD ThreadProc(HMODULE hModule)
 
 INT_PTR CALLBACK Dlgproc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
+    HWND hListView = NULL;
 	switch (uMsg)
 	{
 	case WM_INITDIALOG://首次加载
+        hListView = GetDlgItem(hwndDlg, USER_LISTS);
+		MessageBox(NULL, "开始InitListContrl", "提示", MB_OK);
+        gUserListView = hListView;
+        InitListContrl(hListView);
+		MessageBox(NULL, "结束InitListContrl", "提示", MB_OK);
 		break;
 	case WM_CLOSE://关闭事件
 		EndDialog(hwndDlg, NULL);
@@ -41,7 +49,11 @@ INT_PTR CALLBACK Dlgproc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	case WM_COMMAND://所有按钮的点击事件
 		if (wParam == IDOK)
 		{
-            HookWechatQrcode(hwndDlg, 0x55DE9D);
+            HookWechatQrcode(hwndDlg, gUserListView,0x55DE9D);
+		}
+		else if (wParam == IDCANCEL)
+		{
+			endHook(0x55DEA2);
 		}
 		break;
 	default:
@@ -49,4 +61,19 @@ INT_PTR CALLBACK Dlgproc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	}
 	return FALSE;
 }
+
+void InitListContrl(HWND List)
+{
+	LVCOLUMN pcol = { 0 };
+	LPCSTR titleBuffer[] = { "wxid","微信账号","微信昵称" };
+	pcol.mask = LVCF_FMT | LVCF_WIDTH | LVCF_TEXT;
+	pcol.fmt = LVCFMT_LEFT;
+	pcol.cx = 120;
+	for (int i = 0; i < 3; i++) {
+		//创建list成员信息
+		pcol.pszText = (LPSTR)titleBuffer[i];
+		ListView_InsertColumn(List, i, &pcol);
+	}
+}
+
 

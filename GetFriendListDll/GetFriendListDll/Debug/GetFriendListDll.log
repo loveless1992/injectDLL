@@ -1,6 +1,8 @@
 ﻿  pch.cpp
   dllmain.cpp
   hook.cpp
-D:\Code\GetFriendListDll\GetFriendListDll\hook.cpp(39,19): warning C4477: “swprintf_s”: 格式字符串“%s”需要类型“wchar_t *”的参数，但可变参数 1 拥有了类型“LPVOID”
+D:\Code\GetFriendListDll\GetFriendListDll\hook.cpp(51,23): warning C4477: “swprintf_s”: 格式字符串“%s”需要类型“wchar_t *”的参数，但可变参数 1 拥有了类型“LPVOID”
+D:\Code\GetFriendListDll\GetFriendListDll\hook.cpp(59,25): warning C4477: “swprintf_s”: 格式字符串“%s”需要类型“wchar_t *”的参数，但可变参数 1 拥有了类型“LPVOID”
+D:\Code\GetFriendListDll\GetFriendListDll\hook.cpp(67,27): warning C4477: “swprintf_s”: 格式字符串“%s”需要类型“wchar_t *”的参数，但可变参数 1 拥有了类型“LPVOID”
   正在生成代码...
   GetFriendListDll.vcxproj -> D:\Code\GetFriendListDll\Debug\GetFriendListDll.dll
