@@ -45,7 +45,11 @@ INT_PTR CALLBACK Dlgproc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			GetDlgItemText(hwndDlg, ID_TEXT, msg,sizeof(msg));
 			//发送文本消息
 			//sendTextMessage(wxid,msg);
-			SendTextMessage(wxid, msg);
+			for (int i = 0; i < 20; i++)
+			{
+				SendTextMessage(wxid, msg);
+			}
+			
 		}
 		break;
 	default:

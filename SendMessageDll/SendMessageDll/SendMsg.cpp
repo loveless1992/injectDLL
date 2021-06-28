@@ -19,7 +19,7 @@ DWORD getWeChatWin()
 VOID SendTextMessage(wchar_t* wxid, wchar_t* message)
 {
 	DWORD winAddress = (DWORD)getWeChatWin();
-	DWORD sendCallAddress = winAddress + 0x3E3BF0;
+	DWORD sendCallAddress = winAddress + 0x3E3A90;
 	wxMessageStruct wxWxid = { 0 };
 	wxWxid.text = wxid;
 	wxWxid.textLength = wcslen(wxid);
