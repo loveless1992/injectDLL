@@ -20,8 +20,6 @@ DWORD getWechatWin()
 	return (DWORD)LoadLibrary("WeChatWin.dll");
 }
 
-
-
 CHAR* UnicodeToUTF8(const WCHAR* wideStr)
 {
 	char* utf8Str = NULL;
@@ -42,6 +40,8 @@ char* UnicodeToANSI(const wchar_t* str)
 	WideCharToMultiByte(CP_ACP, 0, str, -1, result, textlen, NULL, NULL);
 	return result;
 }
+
+
 //显示好友列表
 VOID insertUserLists(DWORD userData)
 {
