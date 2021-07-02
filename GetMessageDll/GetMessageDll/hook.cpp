@@ -37,6 +37,16 @@ void getMsg(DWORD userData)
 {
 	wchar_t wxid[0x100] = { 0 };
 	DWORD wxidAdd = (DWORD)&userData + 0x48;
+	DWORD wxidAdd1 = (DWORD) * (DWORD*)userData;
+	DWORD wxidAdd2 = (DWORD) * (DWORD*)wxidAdd1+0x48;//wxID
+	//MessageBox(NULL, (LPSTR)wxidAdd1, "提示", MB_OK);
+	//消息收集
+	if (swprintf_s(wxid, L"%s", *((char*)wxidAdd2)) != -1)
+	{
+		//MessageBox(NULL, UnicodeToANSI(wxid), "提示", MB_OK);
+	}
+
+
 }
 
 
@@ -98,7 +108,7 @@ VOID __declspec(naked) HookF()
 		mov cEdi, edi
 	}
 	//然后跳转到我们自己的处理函数 想干嘛干嘛
-	//getMsg(cEsp);
+	getMsg(cEsp);
 	__asm {
 		mov eax, cEax
 		mov ecx, cEcx

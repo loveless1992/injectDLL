@@ -1,5 +1,6 @@
 ﻿  pch.cpp
   dllmain.cpp
   hook.cpp
+C:\Users\Ninga\Desktop\DLL\GetMessageDll\GetMessageDll\hook.cpp(44,23): warning C4477: “swprintf_s”: 格式字符串“%s”需要类型“wchar_t *”的参数，但可变参数 1 拥有了类型“int”
   正在生成代码...
   GetMessageDll.vcxproj -> C:\Users\Ninga\Desktop\DLL\GetMessageDll\Debug\GetMessageDll.dll
