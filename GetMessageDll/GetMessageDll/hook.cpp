@@ -5,6 +5,7 @@
 BYTE backCode[HOOK_LEN] = { 0 };//用于封装hook的代码
 DWORD WinAdd = 0;
 DWORD retAdd = 0;//返回的地址
+HWND hdl = 0;//界面模块句柄
 //获取模块基址
 DWORD getWechatWin()
 {
@@ -32,18 +33,39 @@ char* UnicodeToANSI(const wchar_t* str)
 	return result;
 }
 
-//hook之后需要的操作
+//hook之后需要的操作 [[esp]]+0x70为消息内容，[[esp]]+0x48为发送者ID
 void getMsg(DWORD userData)
 {
+	//userData += 0x4;
 	wchar_t wxid[0x100] = { 0 };
-	DWORD wxidAdd = (DWORD)&userData + 0x48;
-	DWORD wxidAdd1 = (DWORD) * (DWORD*)userData;
-	DWORD wxidAdd2 = (DWORD) * (DWORD*)wxidAdd1+0x48;//wxID
+	//DWORD wxidAdd = (DWORD)&userData + 0x48;
 	//MessageBox(NULL, (LPSTR)wxidAdd1, "提示", MB_OK);
+	TCHAR str[20];
+	wsprintf(str, "%d", userData);
+	//MessageBox(NULL, str, "ESP地址", MB_OK);//首先取到ESP数据
+	SetDlgItemText(hdl, ST_1, str);
+
+	//取一级指针的内容
+	DWORD d1 = *(DWORD*)userData;
+	TCHAR str2[20];
+	wsprintf(str2, "%d", d1);
+	//MessageBox(NULL, str2, "ESP指向", MB_OK);//首先取到ESP指针的数据
+	SetDlgItemText(hdl, ST_2, str2);
+
+	DWORD d2 = *(DWORD*)d1;
+	TCHAR str3[20];
+	wsprintf(str3, "%d", d2);
+	SetDlgItemText(hdl, ST_3, str3);
+	//MessageBox(NULL, str3, "ESP指向的指向", MB_OK);//首先取到ESP二级指针的数据
 	//消息收集
-	if (swprintf_s(wxid, L"%s", *((char*)wxidAdd2)) != -1)
+	if (swprintf_s(wxid, L"%s", *((LPVOID*)(d2 + 0x48))) != -1)
 	{
-		//MessageBox(NULL, UnicodeToANSI(wxid), "提示", MB_OK);
+		MessageBox(NULL, UnicodeToANSI(wxid), "wxid", MB_OK);
+	}
+
+	if (swprintf_s(wxid, L"%s", *((LPVOID*)(d2 + 0x48))) != -1)
+	{
+		MessageBox(NULL, UnicodeToANSI(wxid), "wxid", MB_OK);
 	}
 
 
@@ -95,9 +117,6 @@ DWORD userData = 0;
 VOID __declspec(naked) HookF()
 {
 	__asm {
-		call dword ptr ds : [eax + 0x8]
-		push edi
-		push ecx
 		mov cEax, eax
 		mov cEcx, ecx
 		mov cEdx, edx
@@ -118,6 +137,9 @@ VOID __declspec(naked) HookF()
 		mov ebp, cEbp
 		mov esi, cEsi
 		mov edi, cEdi
+		call dword ptr ds : [eax + 0x8]
+		push edi
+		push ecx
 		jmp retAdd
 	}
 }
@@ -125,6 +147,7 @@ VOID __declspec(naked) HookF()
 //参数1：界面句柄 参数2，所需hook的偏移，hook偏移：0x4111DB    返回偏移：0x4111E0
 void HookGetMseeage(HWND hwndDlg, DWORD HookAdd)
 {
+	hdl = hwndDlg;
 	WinAdd = getWechatWin();
 	retAdd = getWechatWin() + 0x4111E0;
 	StartHook(WinAdd + HookAdd, &HookF);

@@ -57,6 +57,9 @@ FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     DEFPUSHBUTTON   "确定",IDOK,83,105,50,14
     PUSHBUTTON      "取消",IDCANCEL,137,105,50,14
+    LTEXT           "Static",ST_1,33,17,18,8
+    LTEXT           "Static",ST_2,33,33,18,8
+    LTEXT           "Static",ST_3,33,52,18,8
 END
 
 

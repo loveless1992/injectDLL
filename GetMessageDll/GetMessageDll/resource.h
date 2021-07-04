@@ -3,6 +3,9 @@
 // π© GetMessageDll.rc  π”√
 //
 #define ID_MAIN                         101
+#define ST_1                            1001
+#define ST_2                            1002
+#define ST_3                            1003
 
 // Next default values for new objects
 // 
@@ -10,7 +13,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        103
 #define _APS_NEXT_COMMAND_VALUE         40001
-#define _APS_NEXT_CONTROL_VALUE         1001
+#define _APS_NEXT_CONTROL_VALUE         1004
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

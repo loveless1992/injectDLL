@@ -1,0 +1,9 @@
+﻿  pch.cpp
+  dllmain.cpp
+  getMsg.cpp
+D:\Code\AutoReplayMessage\AutoReplayMessage\getMsg.cpp(17,23): warning C4477: “swprintf_s”: 格式字符串“%s”需要类型“wchar_t *”的参数，但可变参数 1 拥有了类型“LPVOID”
+D:\Code\AutoReplayMessage\AutoReplayMessage\getMsg.cpp(17,87): warning C4477: “swprintf_s”: 格式字符串“%s”需要类型“wchar_t *”的参数，但可变参数 1 拥有了类型“LPVOID”
+  sendMsg.cpp
+  tool.cpp
+  正在生成代码...
+  AutoReplayMessage.vcxproj -> D:\Code\AutoReplayMessage\Debug\AutoReplayMessage.dll
