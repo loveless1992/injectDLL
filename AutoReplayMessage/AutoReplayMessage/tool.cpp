@@ -27,3 +27,12 @@ char* UnicodeToANSI(const wchar_t* str)
 	return result;
 }
 
+wchar_t* getReplayMsg(wchar_t* msg)
+{
+	wchar_t retMsg[0x1000] = { 0 };
+	swprintf_s(retMsg, L"%s", L"≤‚ ‘≤‚ ‘≤‚ ‘≤‚ ‘≤‚ ‘");
+	return retMsg;
+}
+
+
+

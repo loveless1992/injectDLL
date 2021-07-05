@@ -18,10 +18,14 @@ void getMsg(DWORD userData)
 	{
 		//MessageBox(NULL, (LPCUWSTR)wxid, L"接收者", MB_OK);
 		//MessageBox(NULL, (LPCUWSTR)msg, L"消息内容", MB_OK);
-		wchar_t retMsg[0x100] = { 0 };
-		swprintf_s(retMsg, L"%s", L"已经收到您的消息了哦，AutoReplayMsg Ver0.2正在进行稳定性测试暂时无法回复您");
+		
 		//再次数调用发送函数返回一些信息
-		SendTextMessage(wxid, retMsg);
+		if(checkCanSendMsg(wxid))
+		{
+			wchar_t* retMsg = getReplayMsg(msg);
+			SendTextMessage(wxid, retMsg);
+		}
+			
 	}
 }
 
@@ -63,7 +67,6 @@ DWORD cEsp = 0;
 DWORD cEbp = 0;
 DWORD cEsi = 0;
 DWORD cEdi = 0;
-DWORD userData = 0;
 
 //存储寄存器，调用自己的方法，之后恢复寄存器
 //寄存器中要call eax+0x8，由于这一行位置不足，所以在call与两行push之后才jmp回来
@@ -104,4 +107,18 @@ void HookGetMseeage(HWND hwndDlg, DWORD HookAdd)
 	WinAdd = getWeChatWin();
 	retAdd = WinAdd + 0x4111E0;
 	StartHook(WinAdd + HookAdd, &HookF);
+}
+
+//卸载HOOK
+bool endHook(DWORD hookA)
+{
+	DWORD winAdd = getWeChatWin();
+	DWORD hookAdd = winAdd + hookA;//hook的地址+偏移
+	HANDLE hProcess = OpenProcess(PROCESS_ALL_ACCESS, NULL, GetCurrentProcessId());
+	if (WriteProcessMemory(hProcess, (LPVOID)hookAdd, backCode, HOOK_LEN, NULL) == 0)
+	{
+		MessageBox(NULL, L"HOOK卸载成功", L"提示", NULL);
+		return false;
+	}
+	return true;
 }
