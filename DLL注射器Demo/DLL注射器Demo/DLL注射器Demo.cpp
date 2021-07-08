@@ -4,10 +4,8 @@
 #include "pch.h"
 #include "framework.h"
 #include "DLL注射器Demo.h"
-#include <Windows.h>
-#include <TlHelp32.h>
-#include <stdio.h>
-#include <string.h>
+#include "Inject.h"
+
 
 char* processName = (char*)"WeChat.exe";
 
@@ -23,8 +21,8 @@ INT_PTR CALLBACK Dlgproc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	{
 	case WM_INITDIALOG://首次加载
 		//首次加载时需要给选框赋予默认值
-		SetDlgItemText(hwndDlg, ID_DLL_PATH, (char*)"E:\\WritAndRead.dll");
-		SetDlgItemText(hwndDlg, ID_PROCESS_NAME, (char*)"WeChat.exe");
+		SetDlgItemText(hwndDlg, ID_DLL_PATH, (LPCSTR)"C:\\Users\\Ninga\\Desktop\\DLL\\AutoReplayMessage\\Debug\\AutoReplayMessage.dll");
+		SetDlgItemText(hwndDlg, ID_PROCESS_NAME, (LPCSTR)"E:\\WeChat\\WeChat.exe");
 		break;
 	case WM_CLOSE://关闭事件
 		EndDialog(hwndDlg, NULL);
@@ -33,53 +31,63 @@ INT_PTR CALLBACK Dlgproc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		if (wParam == IN_DLL)
 		{
 			CHAR pathStr[0x100] = { 0 };
-			GetDlgItemText(hwndDlg, ID_DLL_PATH, pathStr,sizeof(pathStr));
+			GetDlgItemText(hwndDlg, ID_DLL_PATH, (LPSTR)pathStr,sizeof(pathStr));
+
+			CHAR processNameStr[0x100] = { 0 };
+			GetDlgItemText(hwndDlg, ID_PROCESS_NAME, (LPSTR)processNameStr, sizeof(processNameStr));
+			//injectDll(pathStr, processNameStr);
+			runWechat(pathStr, processNameStr);
+			return TRUE;
+		}
+		else if (wParam == UN_DLL)
+		{
+			CHAR pathStr[0x100] = { 0 };
+			GetDlgItemText(hwndDlg, ID_DLL_PATH, pathStr, sizeof(pathStr));
 
 			CHAR processNameStr[0x100] = { 0 };
 			GetDlgItemText(hwndDlg, ID_PROCESS_NAME, processNameStr, sizeof(processNameStr));
 			//CHAR pathStr[0x100] = { "E:\\WritAndRead.dll" };
 			DWORD dwPID = ProcessNameToFindPID((LPSTR)processNameStr);
-			InjectDll(dwPID, pathStr);
-		}
-		else if (wParam == UN_DLL)
-		{
-			CHAR pathStr[0x100] = { NULL };
-			GetDlgItemText(hwndDlg, ID_DLL_PATH, (LPSTR)pathStr, sizeof(pathStr));
-			CHAR processNameStr[0x100] = { NULL };
-			GetDlgItemText(hwndDlg, ID_PROCESS_NAME, (LPSTR)processNameStr, sizeof(processNameStr));
+			InjectDll2(dwPID, pathStr);
 
-			//char*转wchar_t
-			size_t origsize = strlen(pathStr) + 1;
-			const size_t newsize = 100;
-			size_t convertedChars = 0;
-			wchar_t wcstring[newsize];
-			mbstowcs_s(&convertedChars, wcstring, origsize, pathStr, _TRUNCATE);
+			return TRUE;
+			//CHAR pathStr[0x100] = { NULL };
+			//GetDlgItemText(hwndDlg, ID_DLL_PATH, (LPSTR)pathStr, sizeof(pathStr));
+			//CHAR processNameStr[0x100] = { NULL };
+			//GetDlgItemText(hwndDlg, ID_PROCESS_NAME, (LPSTR)processNameStr, sizeof(processNameStr));
 
-			DWORD dwPID = ProcessNameToFindPID((LPSTR)processNameStr);
-			int err;
-			bool flag =  UnInjectDll(dwPID, (LPSTR)wcstring, err);
-			if (!flag)
-			{
-				//输出错误代码
-				switch (err)
-				{
-				case 1:
-					MessageBox(NULL, "找不到目标模块", "卸载错误", 0);
-					break;
-				case 2:
-					MessageBox(NULL, "函数的地址获取失败", "卸载错误", 0);
-					break;
-				case 3:
-					MessageBox(NULL, "无法创建远程线程", "卸载错误", 0);
-					break;
-				default:
-					break;
-				}
-			}
-			else
-			{
-				MessageBox(NULL, "DLL卸载成功", "提示", 0);
-			}
+			////char*转wchar_t
+			//size_t origsize = strlen(pathStr) + 1;
+			//const size_t newsize = 100;
+			//size_t convertedChars = 0;
+			//wchar_t wcstring[newsize];
+			//mbstowcs_s(&convertedChars, wcstring, origsize, pathStr, _TRUNCATE);
+
+			//DWORD dwPID = ProcessNameToFindPID((LPSTR)processNameStr);
+			//int err;
+			//bool flag =  UnInjectDll(dwPID, (LPSTR)wcstring, err);
+			//if (!flag)
+			//{
+			//	//输出错误代码
+			//	switch (err)
+			//	{
+			//	case 1:
+			//		MessageBox(NULL, "找不到目标模块", "卸载错误", 0);
+			//		break;
+			//	case 2:
+			//		MessageBox(NULL, "函数的地址获取失败", "卸载错误", 0);
+			//		break;
+			//	case 3:
+			//		MessageBox(NULL, "无法创建远程线程", "卸载错误", 0);
+			//		break;
+			//	default:
+			//		break;
+			//	}
+			//}
+			//else
+			//{
+			//	MessageBox(NULL, "DLL卸载成功", "提示", 0);
+			//}
 		}
 		break;
 	default:
@@ -87,42 +95,10 @@ INT_PTR CALLBACK Dlgproc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	}
 	return FALSE;
 }
-//通过微信进程名找到PID，通过PID打开进程获取到进程句柄,由于微信3.2.X添加了子进程，所以这里直接捕获父进程PID
-DWORD ProcessNameToFindPID(char* ProcessName)
-{
-	//获取到整个系统进程快照,需要#include<TlHelp32.h>
-	HANDLE processAll = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, NULL);
-	//遍历对比进程名称
-	PROCESSENTRY32 processInfo = { 0 };
-	processInfo.dwSize = sizeof(PROCESSENTRY32);
-	//这里将所有的进程ID以及父进ID保存下来
-	int processIDArr[10] = { -1 };
-	int processParentIDArr[10] = { -1 };
-	int num = 0;
-	while (Process32Next(processAll, &processInfo))
-	{
-		if (strcmp(processInfo.szExeFile, ProcessName) == 0)
-		{
-			processIDArr[num] = processInfo.th32ProcessID;
-			processParentIDArr[num] = processInfo.th32ProcessID;
-			num++;
-		}
-	}
-	//遍历父句柄，如果子句柄数组中存在父句柄，那么此父句柄就是所需要的句柄
-	for (int i = 0; i < num; i++)
-	{
-		for (int j = 0; j < num; j++)
-		{
-			if (processParentIDArr[j] == processIDArr[i])
-			{
-				return  processParentIDArr[j];
-			}
-		}
-	}
-	return -999;
-}
+
+
 //注入DLL
-BOOL InjectDll(DWORD dwPID, LPCTSTR szDllPath)
+BOOL InjectDll2(DWORD dwPID, LPCTSTR szDllPath)
 {
 	HANDLE hProcess = NULL;//进程句柄
 	HANDLE hThread = NULL;//线程句柄
@@ -132,7 +108,7 @@ BOOL InjectDll(DWORD dwPID, LPCTSTR szDllPath)
 	LPTHREAD_START_ROUTINE pThreadProc;
 	char cTmp[100] = { 0x00 };
 
-	if (!(hProcess = OpenProcess(PROCESS_ALL_ACCESS, FALSE, dwPID))) 
+	if (!(hProcess = OpenProcess(PROCESS_ALL_ACCESS, FALSE, dwPID)))
 	{
 		MessageBox(NULL, "进程打开失败，可能权限不足或软件未开启", "错误", 0);
 		return FALSE;
@@ -181,68 +157,7 @@ BOOL InjectDll(DWORD dwPID, LPCTSTR szDllPath)
 
 	return TRUE;
 }
-//卸载DLL
-BOOL UnInjectDll(DWORD dwPID, LPCTSTR szDllPath, int& nError)
-{
-	nError = 0;
-	HANDLE hProcess = NULL;
-	HANDLE hThread = NULL;
-	HMODULE hMod = NULL;
-	LPVOID pRemoteBuf = NULL;  // 存储在目标进程申请的内存地址  
-	DWORD dwBufSize = (DWORD)(_tcslen(szDllPath) + 1) * sizeof(TCHAR);  // 存储DLL文件路径所需的内存空间大小  
-	LPTHREAD_START_ROUTINE pThreadProc;
 
-	WCHAR* pDllName = (WCHAR*)wcsrchr((wchar_t *)szDllPath,'\\');
-	pDllName = pDllName + 1;
-	//创建进程快照
-	HANDLE hSnap = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE, dwPID);
-	MODULEENTRY32 ME32 = { 0 };
-	ME32.dwSize = sizeof(MODULEENTRY32);
-	BOOL isNext = Module32First(hSnap, &ME32);
-	BOOL flag = FALSE;
-	while (isNext)
-	{
-		wchar_t ws[100];
-		swprintf(ws, 100, L"%hs", ME32.szModule);
 
-		if (wcscmp((wchar_t const*)ws, (wchar_t const*)pDllName) == 0)
-		{
-			flag = TRUE;
-			break;
-		}
-		isNext = Module32Next(hSnap, &ME32);
-	}
-	if (flag == FALSE)
-	{
-		nError = 1;
-		return FALSE;
 
-	}
-
-	// 获取目标进程句柄
-	hProcess = OpenProcess(PROCESS_CREATE_THREAD | PROCESS_VM_OPERATION, FALSE, dwPID);
-	if (NULL == hProcess)
-	{
-		return false;
-	}
-
-	pThreadProc = (PTHREAD_START_ROUTINE)GetProcAddress(GetModuleHandle(_T("Kernel32")), "FreeLibrary");
-	if (pThreadProc == NULL)
-	{
-		nError = 2;
-		return FALSE;
-	}
-
-	hThread = CreateRemoteThread(hProcess, NULL, 0, pThreadProc, ME32.modBaseAddr, 0, NULL);
-	if (hThread == NULL)
-	{
-		nError = 3;
-		return FALSE;
-	}
-	WaitForSingleObject(hThread, INFINITE);
-
-	CloseHandle(hThread);
-	CloseHandle(hProcess);
-	return TRUE;
-}
 

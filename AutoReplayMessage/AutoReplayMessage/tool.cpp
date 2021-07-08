@@ -30,9 +30,7 @@ char* UnicodeToANSI(const wchar_t* str)
 wchar_t* getReplayMsg(wchar_t* msg)
 {
 	wchar_t retMsg[0x1000] = { 0 };
-	swprintf_s(retMsg, L"%s", L"≤‚ ‘≤‚ ‘≤‚ ‘≤‚ ‘≤‚ ‘");
+	swprintf_s(retMsg, L"%s", L"AutoReplayMsg Ver.0.3’˝≥£≤‚ ‘");
 	return retMsg;
 }
-
-
 

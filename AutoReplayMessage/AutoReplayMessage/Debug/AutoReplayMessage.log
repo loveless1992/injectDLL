@@ -1,8 +1,8 @@
 ﻿  pch.cpp
   dllmain.cpp
   getMsg.cpp
-C:\Users\Ninga\Desktop\DLL\AutoReplayMessage\AutoReplayMessage\getMsg.cpp(17,23): warning C4477: “swprintf_s”: 格式字符串“%s”需要类型“wchar_t *”的参数，但可变参数 1 拥有了类型“LPVOID”
-C:\Users\Ninga\Desktop\DLL\AutoReplayMessage\AutoReplayMessage\getMsg.cpp(17,87): warning C4477: “swprintf_s”: 格式字符串“%s”需要类型“wchar_t *”的参数，但可变参数 1 拥有了类型“LPVOID”
+C:\Users\Ninga\Desktop\DLL\AutoReplayMessage\AutoReplayMessage\getMsg.cpp(22,23): warning C4477: “swprintf_s”: 格式字符串“%s”需要类型“wchar_t *”的参数，但可变参数 1 拥有了类型“LPVOID”
+C:\Users\Ninga\Desktop\DLL\AutoReplayMessage\AutoReplayMessage\getMsg.cpp(22,87): warning C4477: “swprintf_s”: 格式字符串“%s”需要类型“wchar_t *”的参数，但可变参数 1 拥有了类型“LPVOID”
   getUserList.cpp
 C:\Users\Ninga\Desktop\DLL\AutoReplayMessage\AutoReplayMessage\getUserList.cpp(26,23): warning C4477: “swprintf_s”: 格式字符串“%s”需要类型“wchar_t *”的参数，但可变参数 1 拥有了类型“LPVOID”
 C:\Users\Ninga\Desktop\DLL\AutoReplayMessage\AutoReplayMessage\getUserList.cpp(34,25): warning C4477: “swprintf_s”: 格式字符串“%s”需要类型“wchar_t *”的参数，但可变参数 1 拥有了类型“LPVOID”

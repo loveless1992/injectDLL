@@ -7,12 +7,17 @@ DWORD WinAdd = 0;
 DWORD retAdd = 0;//返回的地址
 HWND hdl = 0;//界面模块句柄
 
-//hook之后需要的操作 [[esp]]+0x70为消息内容，[[esp]]+0x48为发送者ID
+//hook之后需要的操作 [[esp]]+0x70为消息内容，[[esp]]+0x48为发送者ID  esp+0xc如果是01的话，是自己发给自己的
 void getMsg(DWORD userData)
 {
 	wchar_t wxid[0x100] = { 0 };
 	wchar_t msg[0x4096] = { 0 };
 	DWORD espAddress = *(DWORD*)*(DWORD*)userData;
+	if(*(int *)(userData +0xc) == 1)
+	{
+		return;
+	}
+
 	//消息收集
 	if (swprintf_s(wxid, L"%s", *((LPVOID*)(espAddress + 0x48))) != -1&& swprintf_s(msg, L"%s", *((LPVOID*)(espAddress + 0x70))) != -1)
 	{

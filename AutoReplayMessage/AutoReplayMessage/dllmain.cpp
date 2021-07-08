@@ -49,12 +49,14 @@ INT_PTR CALLBACK Dlgproc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
             HookGetMseeage(hwndDlg, 0x4111DB);
             GetUserListHookStart(hwndDlg, gUserListView, 0x55DE9D);
             MessageBox(NULL, L"HOOK成功", L"提示", MB_OK);
+            SetDlgItemText(hwndDlg, ID_STATE, L"已正常HOOK");
         }
         else if (wParam == IDCANCEL)
         {
             endGetUserListHook(0x55DE9D);
             endHook(0x4111DB);
             MessageBox(NULL, L"HOOK卸载成功", L"提示", MB_OK);
+            SetDlgItemText(hwndDlg, ID_STATE, L"已卸载HOOK");
         }
         break;
     default:
