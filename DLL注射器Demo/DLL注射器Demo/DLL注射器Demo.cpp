@@ -41,53 +41,52 @@ INT_PTR CALLBACK Dlgproc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		}
 		else if (wParam == UN_DLL)
 		{
-			CHAR pathStr[0x100] = { 0 };
-			GetDlgItemText(hwndDlg, ID_DLL_PATH, pathStr, sizeof(pathStr));
+			//CHAR pathStr[0x100] = { 0 };
+			//GetDlgItemText(hwndDlg, ID_DLL_PATH, pathStr, sizeof(pathStr));
 
-			CHAR processNameStr[0x100] = { 0 };
-			GetDlgItemText(hwndDlg, ID_PROCESS_NAME, processNameStr, sizeof(processNameStr));
-			//CHAR pathStr[0x100] = { "E:\\WritAndRead.dll" };
-			DWORD dwPID = ProcessNameToFindPID((LPSTR)processNameStr);
-			InjectDll2(dwPID, pathStr);
-
-			return TRUE;
-			//CHAR pathStr[0x100] = { NULL };
-			//GetDlgItemText(hwndDlg, ID_DLL_PATH, (LPSTR)pathStr, sizeof(pathStr));
-			//CHAR processNameStr[0x100] = { NULL };
-			//GetDlgItemText(hwndDlg, ID_PROCESS_NAME, (LPSTR)processNameStr, sizeof(processNameStr));
-
-			////char*转wchar_t
-			//size_t origsize = strlen(pathStr) + 1;
-			//const size_t newsize = 100;
-			//size_t convertedChars = 0;
-			//wchar_t wcstring[newsize];
-			//mbstowcs_s(&convertedChars, wcstring, origsize, pathStr, _TRUNCATE);
-
+			//CHAR processNameStr[0x100] = { 0 };
+			//GetDlgItemText(hwndDlg, ID_PROCESS_NAME, processNameStr, sizeof(processNameStr));
+			////CHAR pathStr[0x100] = { "E:\\WritAndRead.dll" };
 			//DWORD dwPID = ProcessNameToFindPID((LPSTR)processNameStr);
-			//int err;
-			//bool flag =  UnInjectDll(dwPID, (LPSTR)wcstring, err);
-			//if (!flag)
-			//{
-			//	//输出错误代码
-			//	switch (err)
-			//	{
-			//	case 1:
-			//		MessageBox(NULL, "找不到目标模块", "卸载错误", 0);
-			//		break;
-			//	case 2:
-			//		MessageBox(NULL, "函数的地址获取失败", "卸载错误", 0);
-			//		break;
-			//	case 3:
-			//		MessageBox(NULL, "无法创建远程线程", "卸载错误", 0);
-			//		break;
-			//	default:
-			//		break;
-			//	}
-			//}
-			//else
-			//{
-			//	MessageBox(NULL, "DLL卸载成功", "提示", 0);
-			//}
+			//InjectDll2(dwPID, pathStr);
+
+			CHAR pathStr[0x100] = { NULL };
+			GetDlgItemText(hwndDlg, ID_DLL_PATH, (LPSTR)pathStr, sizeof(pathStr));
+			CHAR processNameStr[0x100] = { NULL };
+			GetDlgItemText(hwndDlg, ID_PROCESS_NAME, (LPSTR)processNameStr, sizeof(processNameStr));
+
+			//char*转wchar_t
+			size_t origsize = strlen(pathStr) + 1;
+			const size_t newsize = 100;
+			size_t convertedChars = 0;
+			wchar_t wcstring[newsize];
+			mbstowcs_s(&convertedChars, wcstring, origsize, pathStr, _TRUNCATE);
+
+			DWORD dwPID = ProcessNameToFindPID((LPSTR)processNameStr);
+			int err;
+			bool flag =  UnInjectDll(dwPID, (LPSTR)wcstring, err);
+			if (!flag)
+			{
+				//输出错误代码
+				switch (err)
+				{
+				case 1:
+					MessageBox(NULL, "找不到目标模块", "卸载错误", 0);
+					break;
+				case 2:
+					MessageBox(NULL, "函数的地址获取失败", "卸载错误", 0);
+					break;
+				case 3:
+					MessageBox(NULL, "无法创建远程线程", "卸载错误", 0);
+					break;
+				default:
+					break;
+				}
+			}
+			else
+			{
+				MessageBox(NULL, "DLL卸载成功", "提示", 0);
+			}
 		}
 		break;
 	default:

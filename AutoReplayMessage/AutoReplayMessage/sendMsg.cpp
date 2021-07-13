@@ -1,6 +1,10 @@
 #include "pch.h"
 #include"dllmain.h"
 // 消息结构体
+
+#define sendMsgCallAddress 0x3E3B80 //发送消息所需要call的函数地址
+#define sendMsgHookAddress 0x11EECB //发送消息地址
+
 struct wxMessageStruct
 {
 	wchar_t* text;
@@ -12,7 +16,7 @@ struct wxMessageStruct
 VOID SendTextMessage(wchar_t* wxid, wchar_t* message)
 {
 	DWORD winAddress = (DWORD)getWeChatWin();
-	DWORD sendCallAddress = winAddress + 0x3E3A90;
+	DWORD sendCallAddress = winAddress + sendMsgCallAddress;
 	wxMessageStruct wxWxid = { 0 };
 	wxWxid.text = wxid;
 	wxWxid.textLength = wcslen(wxid);

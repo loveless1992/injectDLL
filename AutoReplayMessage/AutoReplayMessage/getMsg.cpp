@@ -7,13 +7,13 @@ DWORD WinAdd = 0;
 DWORD retAdd = 0;//返回的地址
 HWND hdl = 0;//界面模块句柄
 
-//hook之后需要的操作 [[esp]]+0x70为消息内容，[[esp]]+0x48为发送者ID  esp+0xc如果是01的话，是自己发给自己的
-void getMsg(DWORD userData)
+//hook之后需要的操作 [[esp]]+0x70为消息内容，[[esp]]+0x48为发送者ID  [[esp]]+0x3c如果是01的话，是自己发给自己的
+VOID getMsg(DWORD userData)
 {
 	wchar_t wxid[0x100] = { 0 };
 	wchar_t msg[0x4096] = { 0 };
 	DWORD espAddress = *(DWORD*)*(DWORD*)userData;
-	if(*(int *)(userData +0xc) == 1)
+	if(*(int *)(userData +0x3c) == 1)
 	{
 		return;
 	}
@@ -30,7 +30,6 @@ void getMsg(DWORD userData)
 			wchar_t* retMsg = getReplayMsg(msg);
 			SendTextMessage(wxid, retMsg);
 		}
-			
 	}
 }
 
@@ -106,12 +105,12 @@ VOID __declspec(naked) HookF()
 }
 
 //参数1：界面句柄 参数2，所需hook的偏移，hook偏移：0x4111DB    返回偏移：0x4111E0
-void HookGetMseeage(HWND hwndDlg, DWORD HookAdd)
+VOID HookGetMseeage(HWND hwndDlg, DWORD hookAdd, DWORD backAdd)
 {
 	hdl = hwndDlg;
 	WinAdd = getWeChatWin();
-	retAdd = WinAdd + 0x4111E0;
-	StartHook(WinAdd + HookAdd, &HookF);
+	retAdd = WinAdd + backAdd;
+	StartHook(WinAdd + hookAdd, &HookF);
 }
 
 //卸载HOOK

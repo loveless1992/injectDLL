@@ -21,7 +21,7 @@ int ignoreLen = 0;
 VOID insertUserLists(DWORD userData)
 {
 	//微信ID
-	wchar_t wxid[0x100] = { 0 };
+	wchar_t wxid[0x300] = { 0 };
 	DWORD wxidAdd = userData + 0x38;
 	if (swprintf_s(wxid, L"%s", *((LPVOID*)wxidAdd)) == -1)
 	{
@@ -29,7 +29,7 @@ VOID insertUserLists(DWORD userData)
 	}
 
 	//微信号
-	wchar_t wxName[0x100] = { 0 };
+	wchar_t wxName[0x300] = { 0 };
 	DWORD wxNameAdd = userData + 0x4C;
 	if (swprintf_s(wxName, L"%s", *((LPVOID*)wxNameAdd)) == -1)
 	{
@@ -37,7 +37,7 @@ VOID insertUserLists(DWORD userData)
 	}
 
 	//用户昵称
-	wchar_t userName[0x100] = { 0 };
+	wchar_t userName[0x300] = { 0 };
 	DWORD userNameAdd = userData + 0x94;
 	if (swprintf_s(userName, L"%s", *((LPVOID*)userNameAdd)) == -1)
 	{
@@ -48,14 +48,18 @@ VOID insertUserLists(DWORD userData)
 	{
 		return;
 	}
-	if (*((LPVOID*)wxNameAdd) == NULL)
+	/*if (*((LPVOID*)wxNameAdd) == NULL)
 	{
 		return;
 	}
 	if (*((LPVOID*)userNameAdd) == NULL)
 	{
 		return;
-	}
+	}*/
+
+	//将微信ID中包含@的去掉，这些都是群
+	if(strstr(UnicodeToUTF8(wxid),"@cha") != NULL)
+		return;
 
 	//去重
 	bool flag = false;
@@ -162,7 +166,7 @@ VOID __declspec(naked) GetUserListHookF()
 	}
 }
 
-VOID GetUserListHookStart(HWND hwndDlg, HWND hwndList, DWORD HookAdd)
+VOID GetUserListHookStart(HWND hwndDlg, HWND hwndList, DWORD HookAdd, DWORD callAdd, DWORD hookBackAdd)
 {
 	//添加特殊白名单
 	wchar_t*  specialWxID = (wchar_t *)"q315319188";
@@ -172,8 +176,8 @@ VOID GetUserListHookStart(HWND hwndDlg, HWND hwndList, DWORD HookAdd)
 	getUserListGHwndList = hwndList;
 	DWORD WinAdd = getWeChatWin();
 	getUserListHDlg = hwndDlg;
-	getUserListRetCallAdd = WinAdd + 0x10D000;
-	getUserListRetAdd = WinAdd + 0x55DEA2;
+	getUserListRetCallAdd = WinAdd + callAdd;
+	getUserListRetAdd = WinAdd + hookBackAdd;
 	GetUserListStartHook(WinAdd + HookAdd, &GetUserListHookF);
 }
 //卸载HOOK

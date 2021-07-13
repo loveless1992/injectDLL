@@ -30,7 +30,7 @@ char* UnicodeToANSI(const wchar_t* str)
 wchar_t* getReplayMsg(wchar_t* msg)
 {
 	wchar_t retMsg[0x1000] = { 0 };
-	swprintf_s(retMsg, L"%s", L"AutoReplayMsg Ver.0.3正常测试");
+	swprintf_s(retMsg, L"%s", L"AutoReplayMsg Ver.0.5 For WeChatPC 3.3.0.115 正常测试");
 	return retMsg;
 }
 

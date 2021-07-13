@@ -24,8 +24,6 @@ BOOL APIENTRY DllMain( HMODULE hModule,
 
 DWORD ThreadProc(HMODULE hModule)
 {
-    //MessageBox(NULL, L"开始hook", L"提示", NULL);
-    //HookWechatQrcode(hModule, 0x55DE9D);
     DialogBox(hModule, MAKEINTRESOURCE(IDD_DIALOG1), NULL, &Dlgproc);
     return 0;
 }
@@ -46,9 +44,9 @@ INT_PTR CALLBACK Dlgproc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
     case WM_COMMAND://所有按钮的点击事件
         if (wParam == IDOK)
         {
-            HookGetMseeage(hwndDlg, 0x4111DB);
-            GetUserListHookStart(hwndDlg, gUserListView, 0x55DE9D);
-            MessageBox(NULL, L"HOOK成功", L"提示", MB_OK);
+            HookGetMseeage(hwndDlg, 0x4112FB, 0x411300);
+            GetUserListHookStart(hwndDlg, gUserListView, 0x55DFCD, 0x10D000, 0x55DFD2);
+            MessageBox(NULL, L"HOOK成功!!!!!!!!", L"提示", MB_OK);
             SetDlgItemText(hwndDlg, ID_STATE, L"已正常HOOK");
         }
         else if (wParam == IDCANCEL)

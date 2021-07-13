@@ -13,6 +13,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="源文件\module">
+      <UniqueIdentifier>{7a3fbc18-003b-419c-9955-1b67499429d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\func">
+      <UniqueIdentifier>{a000b5b5-d3f8-49a3-bb81-4fa6aa0025dd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -29,28 +35,34 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AutoRemind.cpp">
+      <Filter>源文件\func</Filter>
+    </ClCompile>
     <ClCompile Include="dllmain.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="pch.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="sendMsg.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="tool.cpp">
-      <Filter>源文件</Filter>
+      <Filter>源文件\module</Filter>
     </ClCompile>
     <ClCompile Include="getMsg.cpp">
-      <Filter>源文件</Filter>
+      <Filter>源文件\module</Filter>
     </ClCompile>
     <ClCompile Include="getUserList.cpp">
-      <Filter>源文件</Filter>
+      <Filter>源文件\module</Filter>
+    </ClCompile>
+    <ClCompile Include="pch.cpp">
+      <Filter>源文件\module</Filter>
+    </ClCompile>
+    <ClCompile Include="sendMsg.cpp">
+      <Filter>源文件\module</Filter>
+    </ClCompile>
+    <ClCompile Include="tool.cpp">
+      <Filter>源文件\module</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="AutoReplayMessage.rc">
       <Filter>资源文件</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
 </Project>
