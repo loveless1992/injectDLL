@@ -5,6 +5,6 @@ DLL注入，主要逆向微信PC版。
 
 如需支持其他版本，需要自行测量偏移。
 
-2210713版本更新:
+20210713更新:
 
 需要将AutoReplayMessage\lib\Pre-built.2\lib下两个文件夹内的DLL至C:\Windows\SysWOW64下，可以运行，否则pthread包会报错
